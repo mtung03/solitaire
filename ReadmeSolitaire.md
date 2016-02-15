@@ -6,7 +6,7 @@ To-Do:
  - make rules for what cards can go where
 	- descending
 	- alternating color
-	- only kings on open spaces
+	- only kings on open spaces -- done 2/13
 	- only up on foundation piles
  - waste pile displays top 3 instead of the number in that set
  - allow for more than 10 stacks of cards to be moved
