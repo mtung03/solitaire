@@ -15,10 +15,12 @@ class Solitaire:
         self.foundations = [[],[],[],[]]
         self.tableau = [[],[],[],[],[],[],[]]
         self.waste = []
+        self.wasteSize = 0
         self.user_vals = {}
         self.tableau_blacked = {'e':0, 'f': 0, 'g': 1, 'h': 2, 'i': 3, 'j': 4, 'k': 5, 'l': 6}
         self.red_suits = ['D', 'H']
         self.black_suits = ['C', 'S']
+
         
         # map each letter to the right "stack" 
         for j in range(0, 4):
@@ -35,12 +37,13 @@ class Solitaire:
 
     def play_game(self):
         while not self.has_won():
-            os.system('cls')
+            #os.system('cls')
             self.display_full()
             user_move = input('Move? ')
             if not (self.check_move(user_move)):
                 continue
             self.make_move(user_move)
+            print(self.wasteSize)
         print("YOU WIN!!!")
 
     def make_move(self, move):
@@ -52,6 +55,9 @@ class Solitaire:
             self.normal_move(move)
 
     def waste_move(self, move):
+        self.wasteSize -= 1
+        if self.wasteSize == 0:
+            self.wasteSize = 3
         self.normal_move(move)
 
     def normal_move(self, move):
@@ -106,6 +112,8 @@ class Solitaire:
             print('not enough cards')
             return False
         if len(self.user_vals[bindex]) == 0:
+            print( bindex )
+            print( self.user_vals[bindex] )
             if (self.user_vals[bindex] in self.tableau) and \
             self.mydeck.get_val(self.user_vals[aindex][len(self.user_vals[aindex])-(start_val+1)]) != 'King':
                 print('only king on empty')
@@ -158,10 +166,14 @@ class Solitaire:
         if self.mydeck.get_deck_size() >= 3:
             for i in range(3):
                 self.waste.append(self.mydeck.get_card())
+            self.wasteSize = 3
         elif self.mydeck.get_deck_size() > 0:
+            self.wasteSize = 0
             for i in range(self.mydeck.get_deck_size()):
                 self.waste.append(self.mydeck.get_card())
+                self.wasteSize += 1
         else:
+            self.wasteSize = 0
             for i in range(len(self.waste)):
                 recarder = self.waste.pop()
                 self.mydeck.add_card(recarder)
@@ -175,13 +187,15 @@ class Solitaire:
             else:
                 foundation_line += '(  )'
         foundation_line += '('
+        iterat = self.wasteSize
         for i in range(len(self.waste)-1,len(self.waste)-4, -1):
-            if i >= 0:
+            if i >= 0 and iterat > 0:
                 foundation_line += self.mydeck.see_card(self.waste[i])
             else:
                 foundation_line += '  '
             if i > len(self.waste)-3:
                 foundation_line += '|'
+            iterat -= 1
         foundation_line += ')'
         print(foundation_line)
         print( ' f   g   h   i   j   k   l')
