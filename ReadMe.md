@@ -28,4 +28,5 @@ To-Do:
  - allow for more than 10 stacks of cards to be moved -- done
  - subtle semi-repeatable bug when attempting to put an ace in en empty foundation pile
  - code still contains debugging print statements
+ - program crashes when the first input is not a letter
  - better organization possible -- especially in check_move function
